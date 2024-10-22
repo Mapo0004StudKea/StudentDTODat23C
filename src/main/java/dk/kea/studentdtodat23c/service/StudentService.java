@@ -1,5 +1,6 @@
 package dk.kea.studentdtodat23c.service;
 
+import dk.kea.studentdtodat23c.dto.StudentRequestDTO;
 import dk.kea.studentdtodat23c.dto.StudentResponseDTO;
 import dk.kea.studentdtodat23c.model.Student;
 import dk.kea.studentdtodat23c.repository.StudentRepository;
@@ -32,7 +33,7 @@ public class StudentService {
         return studentResponseDTOs;
     }
 
-    public Student getStudentById(Long id) {
+    public StudentResponseDTO getStudentById(Long id) {
         Optional<Student> optionalStudent = studentRepository.findById(id);
 
         // Throw RuntimeException if student is not found
@@ -40,16 +41,17 @@ public class StudentService {
             throw new RuntimeException("Student not found with id " + id);
         }
 
-        Student studentResponse = optionalStudent.get();
+        Student student = optionalStudent.get();
 
-        return studentResponse;
+        return new StudentResponseDTO(student.getId(), student.getName(), student.getBornDate(), student.getBornTime());
 
     }
 
-    public Student createStudent(Student studentRequest) {
-        Student studentResponse = studentRepository.save(studentRequest);
+    public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
+        Student newStudent = new Student(studentRequestDTO.name(), studentRequestDTO.password(), studentRequestDTO.bornDate(), studentRequestDTO.bornTime());
+        Student studentResponse = studentRepository.save(newStudent);
 
-        return studentResponse;
+        return new StudentResponseDTO(studentResponse.getId(), studentResponse.getName(), studentResponse.getBornDate(), studentResponse.getBornTime());
     }
 
     public Student updateStudent(Long id, Student studentRequest) {

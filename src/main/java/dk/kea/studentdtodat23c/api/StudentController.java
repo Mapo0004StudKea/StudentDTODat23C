@@ -1,5 +1,6 @@
 package dk.kea.studentdtodat23c.api;
 
+import dk.kea.studentdtodat23c.dto.StudentRequestDTO;
 import dk.kea.studentdtodat23c.dto.StudentResponseDTO;
 import dk.kea.studentdtodat23c.model.Student;
 import dk.kea.studentdtodat23c.service.StudentService;
@@ -26,9 +27,9 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
+    public ResponseEntity<StudentResponseDTO> getStudentById(@PathVariable Long id) {
         try {
-            Student student = studentService.getStudentById(id);
+            StudentResponseDTO student = studentService.getStudentById(id);
             return new ResponseEntity<>(student, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -36,8 +37,8 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student studentRequest) {
-        Student newStudent = studentService.createStudent(studentRequest);
+    public ResponseEntity<StudentResponseDTO> createStudent(@RequestBody StudentRequestDTO studentRequestDTO) {
+        StudentResponseDTO newStudent = studentService.createStudent(studentRequestDTO);
         return new ResponseEntity<>(newStudent, HttpStatus.CREATED);
     }
 
