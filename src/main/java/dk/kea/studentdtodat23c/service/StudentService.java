@@ -47,7 +47,18 @@ public class StudentService {
     }
 
     public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
-        Student newStudent = new Student(studentRequestDTO.name(), studentRequestDTO.password(), studentRequestDTO.bornDate(), studentRequestDTO.bornTime());
+        /* Student newStudent = new Student(studentRequestDTO.name(),
+                studentRequestDTO.password(),
+                studentRequestDTO.bornDate(),
+                studentRequestDTO.bornTime());
+         */
+        Student newStudent = Student.builder()
+                .name(studentRequestDTO.name())
+                .password(studentRequestDTO.password())
+                .bornDate(studentRequestDTO.bornDate())
+                .bornTime(studentRequestDTO.bornTime())
+                .build();
+        
         Student studentResponse = studentRepository.save(newStudent);
 
         return new StudentResponseDTO(studentResponse.getId(), studentResponse.getName(), studentResponse.getBornDate(), studentResponse.getBornTime());
