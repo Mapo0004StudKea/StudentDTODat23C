@@ -43,9 +43,9 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student studentRequest) {
+    public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable Long id, @RequestBody StudentRequestDTO studentRequestDTO) {
         try {
-            Student updatedStudent = studentService.updateStudent(id, studentRequest);
+            StudentResponseDTO updatedStudent = studentService.updateStudent(id, studentRequestDTO);
             return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
