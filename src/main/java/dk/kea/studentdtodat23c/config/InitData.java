@@ -2,7 +2,6 @@ package dk.kea.studentdtodat23c.config;
 
 import dk.kea.studentdtodat23c.model.Student;
 import dk.kea.studentdtodat23c.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +11,15 @@ import java.time.LocalTime;
 @Component
 public class InitData implements CommandLineRunner {
 
-    @Autowired
-    StudentRepository studentRepository;
+
+    final private StudentRepository studentRepository;
+
+    public InitData(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         Student s1 = new Student();
         s1.setName("Bruce");
         s1.setPassword("1234");
