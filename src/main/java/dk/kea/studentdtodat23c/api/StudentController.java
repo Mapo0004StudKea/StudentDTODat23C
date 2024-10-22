@@ -1,5 +1,6 @@
 package dk.kea.studentdtodat23c.api;
 
+import dk.kea.studentdtodat23c.dto.StudentResponseDTO;
 import dk.kea.studentdtodat23c.model.Student;
 import dk.kea.studentdtodat23c.service.StudentService;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getAllStudents() {
+    public List<StudentResponseDTO> getAllStudents() {
         return studentService.getAllStudents();
     }
 
