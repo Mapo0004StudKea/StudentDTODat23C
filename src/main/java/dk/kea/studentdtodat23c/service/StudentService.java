@@ -37,6 +37,7 @@ public class StudentService {
 
         return studentResponseDTOs;
          */
+        // Functional programming style
         return studentRepository.findAll().stream()
                 .map(student -> new StudentResponseDTO(
                         student.getId(),
@@ -60,6 +61,7 @@ public class StudentService {
 
         return new StudentResponseDTO(student.getId(), student.getName(), student.getBornDate(), student.getBornTime());
          */
+        // Functional programming style
         return studentRepository.findById(id)
                 .map(student -> new StudentResponseDTO(
                         student.getId(),
@@ -97,7 +99,7 @@ public class StudentService {
 
         Student student = optionalStudent.get();
          */
-
+        // Functional programming style
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
 
