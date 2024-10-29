@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -21,7 +22,9 @@ public class StudentService {
     }
 
     public List<StudentResponseDTO> getAllStudents() {
+        /*
         List<Student> students = studentRepository.findAll();
+
         List<StudentResponseDTO> studentResponseDTOs = new ArrayList<>();
 
         // Using a for-loop to convert each Student to a StudentResponseDTO
@@ -31,9 +34,20 @@ public class StudentService {
         }
 
         return studentResponseDTOs;
+        */
+        //use functional programming style
+        return studentRepository.findAll().stream()
+                .map(student -> new StudentResponseDTO(
+                        student.getId(),
+                        student.getName(),
+                        student.getBornDate(),
+                        student.getBornTime()))
+                .toList();
+                //.collect(Collectors.toList());
     }
 
     public StudentResponseDTO getStudentById(Long id) {
+        /*
         Optional<Student> optionalStudent = studentRepository.findById(id);
 
         // Throw RuntimeException if student is not found
@@ -44,7 +58,15 @@ public class StudentService {
         Student student = optionalStudent.get();
 
         return new StudentResponseDTO(student.getId(), student.getName(), student.getBornDate(), student.getBornTime());
-
+        */
+        //functional programming style
+        return studentRepository.findById(id)
+                .map(student -> new StudentResponseDTO(
+                        student.getId(),
+                        student.getName(),
+                        student.getBornDate(),
+                        student.getBornTime()))
+                .orElseThrow(() -> new RuntimeException("Student with id " + id + " not found"));
     }
 
     public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
@@ -74,6 +96,7 @@ public class StudentService {
     }
 
     public StudentResponseDTO updateStudent(Long id, StudentRequestDTO studentRequestDTO) {
+        /*
         Optional<Student> optionalStudent = studentRepository.findById(id);
         // Throw RuntimeException if student is not found
         if (optionalStudent.isEmpty()) {
@@ -81,6 +104,10 @@ public class StudentService {
         }
 
         Student student = optionalStudent.get();
+        */
+        //functional programming style
+        Student student = studentRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Student with id " + id + " not found"));
 
         student.setName(studentRequestDTO.name());
         student.setPassword(studentRequestDTO.password());
