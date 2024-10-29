@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class StudentService {
@@ -21,7 +24,9 @@ public class StudentService {
     }
 
     public List<StudentResponseDTO> getAllStudents() {
+        /*
         List<Student> students = studentRepository.findAll();
+
         List<StudentResponseDTO> studentResponseDTOs = new ArrayList<>();
 
         // Using a for-loop to convert each Student to a StudentResponseDTO
@@ -31,9 +36,19 @@ public class StudentService {
         }
 
         return studentResponseDTOs;
+         */
+        return studentRepository.findAll().stream()
+                .map(student -> new StudentResponseDTO(
+                        student.getId(),
+                        student.getName(),
+                        student.getBornDate(),
+                        student.getBornTime()))
+                .toList();
+                //.collect(toList());
     }
 
     public StudentResponseDTO getStudentById(Long id) {
+        /*
         Optional<Student> optionalStudent = studentRepository.findById(id);
 
         // Throw RuntimeException if student is not found
@@ -44,6 +59,14 @@ public class StudentService {
         Student student = optionalStudent.get();
 
         return new StudentResponseDTO(student.getId(), student.getName(), student.getBornDate(), student.getBornTime());
+         */
+        return studentRepository.findById(id)
+                .map(student -> new StudentResponseDTO(
+                        student.getId(),
+                        student.getName(),
+                        student.getBornDate(),
+                        student.getBornTime()))
+                .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
     }
 
     public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
@@ -65,6 +88,7 @@ public class StudentService {
     }
 
     public StudentResponseDTO updateStudent(Long id, StudentRequestDTO studentRequestDTO) {
+        /*
         Optional<Student> optionalStudent = studentRepository.findById(id);
         // Throw RuntimeException if student is not found
         if (optionalStudent.isEmpty()) {
@@ -72,6 +96,10 @@ public class StudentService {
         }
 
         Student student = optionalStudent.get();
+         */
+
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
 
         student.setName(studentRequestDTO.name());
         student.setPassword(studentRequestDTO.password());
