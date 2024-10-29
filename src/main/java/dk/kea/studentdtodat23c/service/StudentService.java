@@ -6,12 +6,7 @@ import dk.kea.studentdtodat23c.model.Student;
 import dk.kea.studentdtodat23c.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class StudentService {
@@ -45,7 +40,7 @@ public class StudentService {
                         student.getBornDate(),
                         student.getBornTime()))
                 .toList();
-                //.collect(toList());
+                //.collect(Collectors.toList());
     }
 
     public StudentResponseDTO getStudentById(Long id) {
