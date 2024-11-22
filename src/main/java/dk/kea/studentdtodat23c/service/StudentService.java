@@ -6,7 +6,10 @@ import dk.kea.studentdtodat23c.model.Student;
 import dk.kea.studentdtodat23c.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -31,8 +34,8 @@ public class StudentService {
         }
 
         return studentResponseDTOs;
-         */
-        // Functional programming style
+        */
+        //use functional programming style
         return studentRepository.findAll().stream()
                 .map(student -> new StudentResponseDTO(
                         student.getId(),
@@ -55,22 +58,30 @@ public class StudentService {
         Student student = optionalStudent.get();
 
         return new StudentResponseDTO(student.getId(), student.getName(), student.getBornDate(), student.getBornTime());
-         */
-        // Functional programming style
+        */
+        //functional programming style
         return studentRepository.findById(id)
                 .map(student -> new StudentResponseDTO(
                         student.getId(),
                         student.getName(),
                         student.getBornDate(),
                         student.getBornTime()))
-                .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
+                .orElseThrow(() -> new RuntimeException("Student with id " + id + " not found"));
     }
 
     public StudentResponseDTO createStudent(StudentRequestDTO studentRequestDTO) {
+        /* Student student = new Student();
+        student.setName(studentRequestDTO.name());
+        student.setPassword(studentRequestDTO.password());
+        student.setBornDate(studentRequestDTO.bornDate());
+        student.setBornTime(studentRequestDTO.bornTime());
+        */
+
         /* Student newStudent = new Student(studentRequestDTO.name(),
                 studentRequestDTO.password(),
                 studentRequestDTO.bornDate(),
                 studentRequestDTO.bornTime());
+
          */
         Student newStudent = Student.builder()
                 .name(studentRequestDTO.name())
@@ -78,7 +89,7 @@ public class StudentService {
                 .bornDate(studentRequestDTO.bornDate())
                 .bornTime(studentRequestDTO.bornTime())
                 .build();
-        
+
         Student studentResponse = studentRepository.save(newStudent);
 
         return new StudentResponseDTO(studentResponse.getId(), studentResponse.getName(), studentResponse.getBornDate(), studentResponse.getBornTime());
@@ -93,10 +104,10 @@ public class StudentService {
         }
 
         Student student = optionalStudent.get();
-         */
-        // Functional programming style
+        */
+        //functional programming style
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
+                        .orElseThrow(() -> new RuntimeException("Student with id " + id + " not found"));
 
         student.setName(studentRequestDTO.name());
         student.setPassword(studentRequestDTO.password());

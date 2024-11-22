@@ -9,12 +9,12 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Builder
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Builder
 public class Student {
 
     @Id
@@ -35,5 +35,6 @@ public class Student {
         this.bornDate = bornDate;
         this.bornTime = bornTime;
     }
+
 }
 
